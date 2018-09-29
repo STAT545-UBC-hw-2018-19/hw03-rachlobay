@@ -3,6 +3,19 @@ STAT545A-HW\#3-gapminder-exploration
 Rachel Lobay
 2018-09-27
 
+Table of contents
+=================
+
+-   [Load gapminder data and peak at the data](#load-gapminder-data-and-peak-at-the-data)
+-   [Three tasks for Gapminder data set](#three-tasks-for-gapminder-data-set)
+-   [First task is to find max and min GDP per capita for all continents](#first-task-is-to-find-max-and-min-gdp-per-capita-for-all-continents)
+    -   [Minimum and maximum GDP per capita by continent in table and barplot format](#minimum-and-maximum-gdp-per-capita-by-continent-in-table-and-barplot-format)
+-   [Second task is to look at the spread of GDP per capita within continents](#second-task-is-to-look-at-the-spread-of-gdp-per-capita-within-continents)
+    -   [Boxplots for spread of GDP per capita within continents](#boxplots-for-spread-of-gdp-per-capita-within-continents)
+    -   [Table of spread of GDP per capita for the continents](#table-of-spread-of-gdp-per-capita-for-the-continents)
+    -   [Extra for second task](#extra-for-second-task)
+-   [Third task asks how is life expectancy changing over time on different continents](#third-task-asks-how-is-life-expectancy-changing-over-time-on-different-continents)
+
 Load gapminder data and peak at the data
 ========================================
 
@@ -37,8 +50,8 @@ head(gapminder) # See the top six rows of the Gapminder data set
 Three tasks for Gapminder data set
 ==================================
 
-First task - find max and min GDP per capita for all continents
-===============================================================
+First task is to find max and min GDP per capita for all continents
+===================================================================
 
 My first task is to get the maximum and minimum of GDP per capita for all continents.
 
@@ -134,18 +147,18 @@ df.melt %>%
   theme(axis.text.x = element_text(angle = 90, hjust = 1)) + # rotate x-axis text by 90 degrees, otherwise the x-axis labels will overlap. 
   xlab("maximum and minimum GDP per capita") + # x-axis label
   ylab("GDP per capita (PPP dollars)") + # y-axis label 
-    scale_y_log10() # use a log scale because large maxGDPpercap for Asia make it difficult to see other continents barplots
+    scale_y_log10() # use a log scale on y-axis because large maxGDPpercap for Asia make it difficult to see other continents barplots
 ```
 
 ![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-7-1.png)
 
 As we can see, the maximum and minimum values for the GDP per capita have too big a difference (in particular for Asia). As a result, it is difficult for us to interpret the minimum values in particular of the bar graphs. That is why I kept it simple above and just plotted the maximum and minimum values separately.
 
-I will now display a variation of that final graph and a table of the continent, minGDPpercap and maxGDPpercap side-by-side. I am changing the display of the bar charts of minimum and maximum GDP per capita by continent because they get very small and squished when I put the table beside it.
+I will now display a variation of that final graph and a table of the continent, minGDPpercap and maxGDPpercap side-by-side. I am changing the display of the bar charts of minimum and maximum GDP per capita by continent. This is because if I use the multiple graphs that I obtained using facet\_wrap(~continent), they appear very small and squished when I put the table beside them.
 
 Note I referred to the code [here](%22https://stackoverflow.com/questions/50858351/a-kableextra-table-and-a-ggplot-plot-on-same-row-in-rmarkdown-pdf-not-flexdas%22) to learn about tableGrob and placing a table side-by-side with a plot.
 
-I will first load the gridExtra package because I want to use the grid.arrange() function to specify to arrange the table and plot side-by-side.
+I will first load the gridExtra package because I want to use the grid.arrange() function to specify to arrange the table and plot side-by-side. Additionally, I will use a tableGrob with a minimal theme, because tableGrob is a table that is compatible with the gridExtra package.
 
 ``` r
 library(gridExtra) # load gridExtra package 
@@ -163,7 +176,9 @@ minmaxGDPpercap.barplot <- df.melt %>%
   ggplot(aes(x = maxminGDPpercap, y = GDPpercap.dollars, fill = continent)) +  
   geom_bar(stat = "identity", position = "dodge") + 
   scale_y_log10() + # use a log scale because large maxGDPpercap for Asia make it difficult to see other continents barplots 
-  theme(aspect.ratio=1, axis.text.x = element_text(angle = 90, hjust = 1)) # rotate x-axis text by 90 degrees, otherwise the x-axis labels will overlap. 
+  theme(aspect.ratio=1, axis.text.x = element_text(angle = 90, hjust = 1)) + # rotate x-axis text by 90 degrees, otherwise the x-axis labels will overlap. 
+  ggtitle("Bar charts of minumum and maximum GDP per capita coloured by continent") # add title 
+
   
 minmaxGDPpercap.Grobtable <- tableGrob(minmaxGDPpercap.bycontinent, theme=ttheme_minimal(), rows=NULL)  # transform into a tableGrob
 
@@ -172,25 +187,27 @@ grid.arrange(minmaxGDPpercap.Grobtable, minmaxGDPpercap.barplot, nrow=1) # displ
 
 ![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-8-1.png)
 
-Second task - spread of GDP per capita within continents
-========================================================
+Second task is to look at the spread of GDP per capita within continents
+========================================================================
 
 The second task that I will complete is to look at the spread of GDP per capita within the continents.
 
 Boxplots for spread of GDP per capita within continents
 =======================================================
 
-Side-by-side boxplots strike me as a good way to see the differences in spread for all the continents together.
+Side-by-side boxplots strike me as a good way to see the differences in spread for all the continents together. The below boxplot design is credited to @RetoSterchi.
 
 ``` r
-gapminder %>% 
+boxplotGDP.bycont <- gapminder %>% 
   ggplot(aes(x = continent, y = gdpPercap, fill = continent)) +
   geom_boxplot(alpha = 0.7) + # make a ggplot2 boxplot
   geom_jitter(aes(colour = continent), alpha = 0.2) +  # add jitter for the continents
   xlab("Continent") + # label the x-axis 
   ylab("GDP per capita (PPP dollars)") + # label the y-axis 
-  ggtitle("Boxplot of GDP per capita by continent") +
+  ggtitle("GDP per capita by continent") +
   scale_y_log10() # use a log scale because high GDP per capita outliers for Asia make it difficult to see other boxplots
+
+boxplotGDP.bycont
 ```
 
 ![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-9-1.png)
@@ -203,12 +220,14 @@ Table of spread of GDP per capita for the continents
 Let's look at the summary of the standard deviation, IQR, maximum and minimum values of the gdpPercap by using a combination of group\_by() and summarize() functions as we did in class. I will display this data in a simple kable table.
 
 ``` r
-gapminder %>% 
+spread.bycontinent <- gapminder %>% 
   group_by(continent) %>% 
   summarize(sd.gdpPercap = sd(gdpPercap), # find sd for each continent
             IQR.gdpPercap = IQR(gdpPercap), # find IQR for each continent
             min.gdpPercap = min(gdpPercap), # find min gdpPercap for each continent
-            max.gdpPercap = max(gdpPercap)) %>% # find max gdpPercap for each continent
+            max.gdpPercap = max(gdpPercap)) # find max gdpPercap for each continent
+  
+spread.bycontinent %>% 
   kable() # put spread data for continents in a kable table
 ```
 
@@ -228,12 +247,30 @@ We see Asia has a very large maximum GDP per capita value, which is 113523.13 PP
 
 There are a few key points from our analysis of the spread. Europe has the largest IQR range at 13248.301 PPP dollars, meaning there is a large spread in GDP per capita in European countries that were analyzed. We determine that Asia, in particular, has a very large standard deivation and hence a a large spread in terms of GDP per capita. This may mean that there is great dispersion in the standards of living. Africa has a relatively low GDP per capita and spread of GDP per capital overall. Africa has the smallest minimum GDP per capita out of all of the continents at 241.1659 PPP dollars. Finally, Oceania has a very high minimum GDP per capita at 10039.5956 PPP dollars, meaning that the standard of living is generally quite high.
 
+Both table and boxplots displayed next to each other
+----------------------------------------------------
+
+What I am going to do next is to show that the table and boxplot can be displayed next to each other. First, I will drop the IQR.gdpPercap column in the table because I want to limit the information from the table to the standard deviation, min and max values. Again, I will use a tableGrob, but this time instead of a minimal theme, I will try a grey theme. I will also make the text smaller in the table ([see here for reference](https://stackoverflow.com/questions/31776557/how-to-adjust-the-font-size-of-tablegrob)) so that the boxplot will hopefully have more room to be displayed. Additionally, I will change the table text color to navy for readability.
+
+``` r
+spread.bycontinent <- within(spread.bycontinent, rm("IQR.gdpPercap")) # remove IQR.gdpPercap column from data frame
+
+spread.bycontinent.Grobtable <- tableGrob(spread.bycontinent , theme=ttheme_default( # transform into a tableGrob with default theme
+    core = list(fg_params=list(cex = 0.65)), # smaller table text size
+    colhead = list(fg_params=list(cex = 0.7)), 
+    rowhead = list(fg_params=list(cex = 0.7)), base_colour = "navy"), rows=NULL)  
+
+grid.arrange(spread.bycontinent.Grobtable, boxplotGDP.bycont + coord_flip(), nrow=1) # display coordinate flipped plot and table side-by-side
+```
+
+![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-11-1.png)
+
 Extra for this task
 -------------------
 
-Since we've identified some interesting info about the spread, we can look at the GDP per capita more closely for continents we would like to investigate more about.
+Since we've identified some interesting tidbits about the spread, we can look at the GDP per capita more closely for continents we would like to investigate more.
 
-For example, I am curious about the GDP per capita of the countries in Asia. Which countries have a higher GDP per capita overall and which have a very low GDP per capita? There seems to be quite a large spread, which we saw from the box plot... so there should be something deeper to see here.
+For example, I am curious about the GDP per capita of the countries in Asia. Which countries have a higher GDP per capita overall and which have a very low GDP per capita? There seems to be quite a large spread, which we saw from the box plot... so there should be a dispersion in the GDP per capita by country. We shall look at a diverging bar chart of countries in Asia in 2007 to investigate this.
 
 Note that I am manipulating the code from the diverging bar chart from [here](%22https://www.trafforddatalab.io/graphics_companion/%22)
 
@@ -266,16 +303,47 @@ df %>%
   ylab("difference (PPP dollars)")
 ```
 
-![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-11-1.png)
+![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-12-1.png)
 
 We can spot that Singapore, Kuwait, and Hong Kong have a high mean GDP per capita of over 25,000 PPP dollars in 2007. In contrast, Myanmar, Nepal, and Afghanistan have a very low GDP per capita of less than - 10,000 PPP dollars in 2007.
 
-Third task - how is mean life expectancy changing over time on different continents?
-====================================================================================
+Let's go back in time. We will hone in on Singapore, Kuwait, and Hong Kong and see how their GDP per capita changed over the years. Did they always have a high mean GDP per capita? Probably not. Also, we will look at the years below 1992 because we already have seen information about the mean GDP per capita of each of the countries in 2007. Our focus, now, is on the GDP per capita leading up to that.
+
+We will use a combination of ggplot2 and gganimate packages to see this.
+
+``` r
+library(devtools) # load devtools pacckage
+
+devtools::install_github('thomasp85/gganimate') # install gganimate package this way because it is not installing when we use the install.packages() function with R 3.5.1. Also, gganimate is Github-based (not based on CRAN).
+
+devtools::install_github("thomasp85/transformr")  # same deal with transformr, which is needed to draw the animated lines below
+
+library(gganimate) # laod gganimate package
+library(transformr) # load transformr package to draw line
+
+lifeExp.bycontyr <- gapminder %>% 
+  select(country, year, gdpPercap) %>% # only select country, year, and gdpPercap columns
+  filter((country == "Kuwait" | country == "Singapore" | country == "Hong Kong, China") & year <= 1992) %>%
+  group_by(country, year) %>% # group by country and year
+  mutate(meangdp = mean(gdpPercap)) %>% # add mean gdpPercap columnr
+  ggplot(aes(x =  year, y = meangdp, color = country, group = country)) +
+  geom_path(size = 2, alpha = 0.4, arrow = arrow()) + # lines of the mean gdpPercap of the 3 countries over the years
+  # gganimate code parts are below 
+  transition_reveal(year, year) # transitions are the years
+
+lifeExp.bycontyr # let's see the animation!
+```
+
+![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-13-1.gif)
+
+Note that the animation may appear slow on github. I was looking for options on how to get the frame speed to go faster when I use transition\_reveal() but I have not been able to find a quick and easy solution.
+
+Third task asks how is life expectancy changing over time on different continents
+=================================================================================
 
 The task I am going to tackle is "How is life expectancy changing over time on different continents?"
 
-However, I am going to make the task have a more specific objective. I will specify that I will follow the the mean life expectancy for each continent. So, the question now is how is the \*\* mean\*\* life expectancy changes over time for the differenct continents.
+However, I am going to make the task have a more specific objective. I will specify that I will follow the the mean life expectancy for each continent. So, the question now is how is the **mean** life expectancy changes over time for the differenct continents.
 
 ``` r
 mean.lifeExp.bycontinentyear <- gapminder %>% 
@@ -350,15 +418,49 @@ mean.lifeExp.bycontinentyear %>%  # summarize the mean life expectancy from 1952
 | Oceania   |  2002|      79.74000|
 | Oceania   |  2007|      80.71950|
 
-We can visualize the mean life expectancy for the continents over time by using a multiple line chart.
+We can visualize the mean life expectancy over time separated by continent by using a multiple line chart.
 
 ``` r
 mean.lifeExp.bycontinentyear %>% 
   ggplot(aes(x = year, y = mean.lifeExp, colour = continent)) +
   geom_line(size = 1) + # add lines to track the life expectancy for the continents over time
-  geom_point(size = 2) # add points to the lines for the years. 
+  geom_point(size = 2) + # add points to the lines for the years. 
+  ggtitle("Mean life expectancy over time separated by continent")
 ```
 
-![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-13-1.png)
+![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
-It is great that the mean life expectancy for the continents have an increasing trend (for the most part). Africa, however, has a bit of a downward trend in life expectancy from 1990 to 2000 where it begins to increase again. That may be, in part, due to the HIV/AIDS epidemic. Oceania has the highest mean life expectacy of all the continents and is closely followed by Europe. Oceania's mean life expectancy started just below 70 years old in the 1950s, which is a very high rate to begin with! The mean life expectancy for Oceania rost to just over 80 by 2007.
+``` r
+mean.lifeExp.bycontinentyear
+```
+
+    ## # A tibble: 60 x 3
+    ## # Groups:   continent [5]
+    ##    continent  year mean.lifeExp
+    ##    <fct>     <int>        <dbl>
+    ##  1 Africa     1952         39.1
+    ##  2 Africa     1957         41.3
+    ##  3 Africa     1962         43.3
+    ##  4 Africa     1967         45.3
+    ##  5 Africa     1972         47.5
+    ##  6 Africa     1977         49.6
+    ##  7 Africa     1982         51.6
+    ##  8 Africa     1987         53.3
+    ##  9 Africa     1992         53.6
+    ## 10 Africa     1997         53.6
+    ## # ... with 50 more rows
+
+It is great that the mean life expectancy for the continents have an increasing trend (for the most part). Africa, however, has a bit of a downward trend in life expectancy from 1990 to 2000 where it begins to increase again. That may be, in part, due to the HIV/AIDS epidemic. Oceania has the highest mean life expectacy of all the continents and is closely followed by Europe. Oceania's mean life expectancy started just below 70 years old in the 1950s, which is a very high rate to begin with! The mean life expectancy for Oceania rose to just over 80 by 2007.
+
+From the multiple line graph, we see that Africa consistently has the lowest mean life expectancy and Oceania consistently has the highest mean life expectancy over the years. So, it may be interesting to see a side-by-side comparison of the mean life expectancy values for those two continents over the years. Hence I will select the tables of just those two continents and display them side-by-side using the gridExtra package and tableGrob.
+
+``` r
+mean.lifeExp.Africa <- tableGrob(mean.lifeExp.bycontinentyear[1:12,]) # table of Africa rows
+mean.lifeExp.Oceania<- tableGrob(mean.lifeExp.bycontinentyear[49:60,]) # table of Oceania rows
+
+haligned <- gtable_combine(mean.lifeExp.Africa, mean.lifeExp.Oceania, along = 1) # combine along row
+
+grid.arrange(haligned, nrow = 1) # display tables side-by-side
+```
+
+![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-16-1.png)
