@@ -307,7 +307,7 @@ df %>%
 
 We can spot that Singapore, Kuwait, and Hong Kong have a high mean GDP per capita of over 25,000 PPP dollars in 2007. In contrast, Myanmar, Nepal, and Afghanistan have a very low GDP per capita of less than - 10,000 PPP dollars in 2007.
 
-Let's go back in time. We will hone in on Singapore, Kuwait, and Hong Kong and see how their GDP per capita changed over the years. Did they always have a high mean GDP per capita? Probably not. Also, we will look at the years below 1992 because we already have seen information about the mean GDP per capita of each of the countries in 2007. Our focus, now, is on the GDP per capita leading up to that.
+Let's go back in time. We will hone in on Singapore, Kuwait, and Hong Kong and see how their mean GDP per capita changed over the years. Did they always have a high mean GDP per capita? Probably not. Also, we will look at the years below 1992 because we already have seen information about the mean GDP per capita of each of the countries in 2007. Our focus, now, is on the GDP per capita leading up to that.
 
 We will use a combination of ggplot2 and gganimate packages to see this.
 
@@ -464,3 +464,5 @@ grid.arrange(haligned, nrow = 1) # display tables side-by-side
 ```
 
 ![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-16-1.png)
+
+From seeing these tables side-by-side, it is easy to see exactly how different numerically the mean life expectancy differs over the years for the continents. It is crazy to think that in 2007 (according to this data) the mean life expectancy differed for Africa and Oceania by 80.71 - 54.81 = 25.90 years!

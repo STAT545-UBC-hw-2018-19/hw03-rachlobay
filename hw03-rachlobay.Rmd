@@ -231,7 +231,7 @@ df %>%
 
 We can spot that Singapore, Kuwait, and Hong Kong have a high mean GDP per capita of over 25,000 PPP dollars in 2007. In contrast, Myanmar, Nepal, and Afghanistan have a very low GDP per capita of less than - 10,000 PPP dollars in 2007. 
 
-Let's go back in time. We will hone in on Singapore, Kuwait, and Hong Kong and see how their GDP per capita changed over the years. Did they always have a high mean GDP per capita? Probably not. Also, we will look at the years below 1992 because we already have seen information about the mean GDP per capita of each of the countries in 2007. Our focus, now, is on the GDP per capita leading up to that. 
+Let's go back in time. We will hone in on Singapore, Kuwait, and Hong Kong and see how their mean GDP per capita changed over the years. Did they always have a high mean GDP per capita? Probably not. Also, we will look at the years below 1992 because we already have seen information about the mean GDP per capita of each of the countries in 2007. Our focus, now, is on the GDP per capita leading up to that. 
 
 We will use a combination of ggplot2 and gganimate packages to see this.
 
