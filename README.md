@@ -11,7 +11,7 @@ This assignment is to use dplyr/ggplot2 to manipulate and explore data.
 
 2) Look at the spread of GDP per capita within the continents.
 
-3) Compute a trimmed mean of life expectancy for different years. Or a weighted mean, weighting by population. Just try something other than the plain vanilla mean.
+3) Investigate how is life expectancy changing over time on different continents?
 
 # Navigation for HW #3
 

@@ -145,7 +145,7 @@ I will now display a variation of that final graph and a table of the continent,
 
 Note I referred to the code [here](%22https://stackoverflow.com/questions/50858351/a-kableextra-table-and-a-ggplot-plot-on-same-row-in-rmarkdown-pdf-not-flexdas%22) to learn about tableGrob and placing a table side-by-side with a plot.
 
-I will first load the gridExtra package because I want to use the grid.arrange() function to specify to arrange the plot and table side-by-side.
+I will first load the gridExtra package because I want to use the grid.arrange() function to specify to arrange the table and plot side-by-side.
 
 ``` r
 library(gridExtra) # load gridExtra package 
@@ -228,12 +228,54 @@ We see Asia has a very large maximum GDP per capita value, which is 113523.13 PP
 
 There are a few key points from our analysis of the spread. Europe has the largest IQR range at 13248.301 PPP dollars, meaning there is a large spread in GDP per capita in European countries that were analyzed. We determine that Asia, in particular, has a very large standard deivation and hence a a large spread in terms of GDP per capita. This may mean that there is great dispersion in the standards of living. Africa has a relatively low GDP per capita and spread of GDP per capital overall. Africa has the smallest minimum GDP per capita out of all of the continents at 241.1659 PPP dollars. Finally, Oceania has a very high minimum GDP per capita at 10039.5956 PPP dollars, meaning that the standard of living is generally quite high.
 
+Extra for this task
+-------------------
+
+Since we've identified some interesting info about the spread, we can look at the GDP per capita more closely for continents we would like to investigate more about.
+
+For example, I am curious about the GDP per capita of the countries in Asia. Which countries have a higher GDP per capita overall and which have a very low GDP per capita? There seems to be quite a large spread, which we saw from the box plot... so there should be something deeper to see here.
+
+Note that I am manipulating the code from the diverging bar chart from [here](%22https://www.trafforddatalab.io/graphics_companion/%22)
+
+``` r
+df <- gapminder %>% 
+  filter(year == 2007 & continent == "Asia") %>% 
+  mutate(mean = mean(gdpPercap), difference = gdpPercap - mean, type = if_else(gdpPercap < mean, "Less","Greater")) %>% 
+  arrange(difference) %>% # arrange by difference first (lowest to highest)
+  mutate(country = factor(country, levels = country))  # mutate country so that the countries are sorted (from lowest to highest difference) and by country
+  
+head(df) # make sure three new columns for mean, difference, and type were added to data frame
+```
+
+    ## # A tibble: 6 x 9
+    ##   country continent  year lifeExp    pop gdpPercap   mean difference type 
+    ##   <fct>   <fct>     <int>   <dbl>  <int>     <dbl>  <dbl>      <dbl> <chr>
+    ## 1 Myanmar Asia       2007    62.1 4.78e7      944  12473.    -11529. Less 
+    ## 2 Afghan… Asia       2007    43.8 3.19e7      975. 12473.    -11498. Less 
+    ## 3 Nepal   Asia       2007    63.8 2.89e7     1091. 12473.    -11382. Less 
+    ## 4 Bangla… Asia       2007    64.1 1.50e8     1391. 12473.    -11082. Less 
+    ## 5 Korea,… Asia       2007    67.3 2.33e7     1593. 12473.    -10880. Less 
+    ## 6 Cambod… Asia       2007    59.7 1.41e7     1714. 12473.    -10759. Less
+
+``` r
+df %>% 
+  ggplot( aes(x = country, y = difference, label = country)) + 
+  geom_col(aes(fill = type), width = 0.5, alpha = 0.8) +
+  coord_flip() + # flip x and y axes so bar plots are displayed horizontally
+  ggtitle("Mean GDP per capita of countries in Asia in 2007") + 
+  ylab("difference (PPP dollars)")
+```
+
+![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-11-1.png)
+
+We can spot that Singapore, Kuwait, and Hong Kong have a high mean GDP per capita of over 25,000 PPP dollars in 2007. In contrast, Myanmar, Nepal, and Afghanistan have a very low GDP per capita of less than - 10,000 PPP dollars in 2007.
+
 Third task - how is mean life expectancy changing over time on different continents?
 ====================================================================================
 
 The task I am going to tackle is "How is life expectancy changing over time on different continents?"
 
-However, I am going to make the task to have a more specific objective. I will specify that I will follow the the mean life expectancy for each continent. So, the question now is how is the \*\* mean\*\* life expectancy changes over time for the differenct continents.
+However, I am going to make the task have a more specific objective. I will specify that I will follow the the mean life expectancy for each continent. So, the question now is how is the \*\* mean\*\* life expectancy changes over time for the differenct continents.
 
 ``` r
 mean.lifeExp.bycontinentyear <- gapminder %>% 
@@ -308,7 +350,7 @@ mean.lifeExp.bycontinentyear %>%  # summarize the mean life expectancy from 1952
 | Oceania   |  2002|      79.74000|
 | Oceania   |  2007|      80.71950|
 
-We can visualize the weighted mean life expectancy for the continents over time by using a multiple line chart.
+We can visualize the mean life expectancy for the continents over time by using a multiple line chart.
 
 ``` r
 mean.lifeExp.bycontinentyear %>% 
@@ -317,6 +359,6 @@ mean.lifeExp.bycontinentyear %>%
   geom_point(size = 2) # add points to the lines for the years. 
 ```
 
-![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-12-1.png)
+![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-13-1.png)
 
 It is great that the mean life expectancy for the continents have an increasing trend (for the most part). Africa, however, has a bit of a downward trend in life expectancy from 1990 to 2000 where it begins to increase again. That may be, in part, due to the HIV/AIDS epidemic. Oceania has the highest mean life expectacy of all the continents and is closely followed by Europe. Oceania's mean life expectancy started just below 70 years old in the 1950s, which is a very high rate to begin with! The mean life expectancy for Oceania rost to just over 80 by 2007.
