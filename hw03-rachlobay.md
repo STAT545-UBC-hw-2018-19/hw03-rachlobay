@@ -432,7 +432,7 @@ mean.lifeExp.bycontinentyear %>%
 
 It is great that the mean life expectancy for the continents have an increasing trend (for the most part). Africa, however, has a bit of a downward trend in life expectancy from 1990 to 2000 where it begins to increase again. That may be, in part, due to the HIV/AIDS epidemic. Oceania has the highest mean life expectacy of all the continents and is closely followed by Europe. Oceania's mean life expectancy started just below 70 years old in the 1950s, which is a very high rate to begin with! The mean life expectancy for Oceania rose to just over 80 by 2007.
 
-From the multiple line graph, we see that Africa consistently has the lowest mean life expectancy and Oceania consistently has the highest mean life expectancy over the years. So, it may be interesting to see a side-by-side comparison of the mean life expectancy values for those two continents over the years. Hence, I will make a line chart of the mean life expectancy of just those two continents.
+From the multiple line graph, we see that Africa consistently has the lowest mean life expectancy and Oceania consistently has the highest mean life expectancy over the years. So, it may be interesting to see a side-by-side comparison of the mean life expectancy values for those two continents over the years. Hence, I will make a line chart of the mean life expectancy of just those two continents. I will also draw orange lines to highlight the difference in lifeExp between the continents for each year.
 
 ``` r
 # Construct a line chart for just Africa and Oceania
@@ -440,11 +440,12 @@ Africa.Oceania.mean.lifeExp <- mean.lifeExp.bycontinentyear %>%
   filter(continent == "Africa" | continent == "Oceania")  # filter through continent mean life expectancy data to keep only Africa or Oceania rows 
 
 Africa.Oceania.mean.lifeExp.chart <- Africa.Oceania.mean.lifeExp %>% 
-  ggplot(aes(x = year, y = mean.lifeExp, colour = continent)) +
-  geom_line(size = 1) + # add lines to track the life expectancy for the continents over time
-  geom_point(size = 2) # add points to the lines for the years. 
+  ggplot(aes(x = year, y = mean.lifeExp, color = continent)) +
+    geom_line(size = 2) +
+    geom_point(size = 3) + # add points to the lines for the years. 
+  geom_line(aes(group = year), color = "orange", size = 1, alpha = 0.4)  # add lines to track the life expectancy for the continents over time
 
-Africa.Oceania.mean.lifeExp.chart +  ggtitle("Mean life expectancy over time graph ") # add title
+Africa.Oceania.mean.lifeExp.chart +  ggtitle("Multiple line chart of mean life expectancy over time") # add title
 ```
 
 ![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-16-1.png)
