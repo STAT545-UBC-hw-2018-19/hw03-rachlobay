@@ -233,7 +233,7 @@ We can spot that Singapore, Kuwait, and Hong Kong have a high mean GDP per capit
 
 Let's go back in time. We will hone in on Singapore, Kuwait, and Hong Kong and see how their mean GDP per capita changed over the years. Did they always have a high mean GDP per capita? Probably not. Also, we will look at the years below 1992 because we already have seen information about the mean GDP per capita of each of the countries in 2007. Our focus, now, is on the GDP per capita leading up to that. 
 
-We will use a combination of ggplot2 and gganimate packages to see this.
+We will use a combination of ggplot2 and gganimate packages to see this. I thought it would be fun to try to animate this bar chart because then you can track the gdpPercap over time. So, instead of seeing the mean gdpPercap over time immediately, you track how it got from where was in 1952 to where it was in 2007.
 
 ```{r message = FALSE}
 library(devtools) # load devtools pacckage
@@ -258,7 +258,7 @@ lifeExp.bycontyr <- gapminder %>%
 lifeExp.bycontyr # let's see the animation!
 ```
 
-Note that the animation may appear slow on github. I was looking for options on how to get the frame speed to go faster when I use transition_reveal() but I have not been able to find a quick and easy solution.
+Note that the animation may appear slow on Github. I was looking for options on how to get the frame speed to go faster when I use transition_reveal() but I have not been able to find a quick and easy solution.
 
 # Third task asks how is life expectancy changing over time on different continents
 
@@ -308,11 +308,12 @@ Now, I will make a table of the mean life expectancy of just those two continent
 
 ```{r}
 Africa.Oceania.mean.lifeExp.untidy <- Africa.Oceania.mean.lifeExp %>% 
-  spread("continent", value = "mean.lifeExp") # use tidyr spread function to make Africa and Oceania mean life expectancy columns
+  spread("continent", value = "mean.lifeExp") %>% # use tidyr spread function to make Africa and Oceania mean life expectancy columns
+  mutate(difference.inyrs = Oceania - Africa) # add a column for the difference in life expectancy (so you don't have to do the calculation in your head).
 
 Africa.Oceania.mean.lifeExp.Grob <- tableGrob(Africa.Oceania.mean.lifeExp.untidy, theme=ttheme_default()) # tableGrob of Africa and Oceania mean life expectancy data
 
 grid.arrange(top="Mean Life expectancy over time (1952 - 2007) for Oceania and Africa", Africa.Oceania.mean.lifeExp.Grob, Africa.Oceania.mean.lifeExp.chart, nrow = 1) # display tables and bar chart side-by-side using grid.arrange()
 ```
 
-From inspecting these side-by-side tables, it is easy to see exactly how different the mean life expectancy differs over the years for the two continents. It is crazy to think that in 2007 (according to this data) the mean life expectancy differed for Africa and Oceania by 80.71 - 54.81 = 25.90 years! 
+From inspecting these side-by-side tables, it is easy to see exactly how different the mean life expectancy differs over the years for the two continents. It is crazy to think that in even in 2007 the mean life expectancy differed for Africa and Oceania by about 25.91 years (according to this data)! 
