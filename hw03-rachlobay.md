@@ -348,7 +348,7 @@ However, I am going to make the task have a more specific objective. I will spec
 ``` r
 mean.lifeExp.bycontinentyear <- gapminder %>% 
   group_by(continent, year) %>% # group by continent and year
-  summarize(mean.lifeExp = mean(lifeExp)) 
+  summarize(mean.lifeExp = round(mean(lifeExp), digits = 2)) # note that I rounded the mean life expectancy to 2 decimal places
 
 
 mean.lifeExp.bycontinentyear %>%  # summarize the mean life expectancy from 1952 - 2007 over 5 year periods for each continent
@@ -357,66 +357,66 @@ mean.lifeExp.bycontinentyear %>%  # summarize the mean life expectancy from 1952
 
 | continent |  year|  mean.lifeExp|
 |:----------|-----:|-------------:|
-| Africa    |  1952|      39.13550|
-| Africa    |  1957|      41.26635|
-| Africa    |  1962|      43.31944|
-| Africa    |  1967|      45.33454|
-| Africa    |  1972|      47.45094|
-| Africa    |  1977|      49.58042|
-| Africa    |  1982|      51.59287|
-| Africa    |  1987|      53.34479|
-| Africa    |  1992|      53.62958|
-| Africa    |  1997|      53.59827|
-| Africa    |  2002|      53.32523|
-| Africa    |  2007|      54.80604|
-| Americas  |  1952|      53.27984|
-| Americas  |  1957|      55.96028|
-| Americas  |  1962|      58.39876|
-| Americas  |  1967|      60.41092|
-| Americas  |  1972|      62.39492|
-| Americas  |  1977|      64.39156|
-| Americas  |  1982|      66.22884|
-| Americas  |  1987|      68.09072|
-| Americas  |  1992|      69.56836|
-| Americas  |  1997|      71.15048|
-| Americas  |  2002|      72.42204|
-| Americas  |  2007|      73.60812|
-| Asia      |  1952|      46.31439|
-| Asia      |  1957|      49.31854|
-| Asia      |  1962|      51.56322|
-| Asia      |  1967|      54.66364|
-| Asia      |  1972|      57.31927|
-| Asia      |  1977|      59.61056|
-| Asia      |  1982|      62.61794|
-| Asia      |  1987|      64.85118|
-| Asia      |  1992|      66.53721|
-| Asia      |  1997|      68.02052|
-| Asia      |  2002|      69.23388|
-| Asia      |  2007|      70.72848|
-| Europe    |  1952|      64.40850|
-| Europe    |  1957|      66.70307|
-| Europe    |  1962|      68.53923|
-| Europe    |  1967|      69.73760|
-| Europe    |  1972|      70.77503|
-| Europe    |  1977|      71.93777|
-| Europe    |  1982|      72.80640|
-| Europe    |  1987|      73.64217|
-| Europe    |  1992|      74.44010|
-| Europe    |  1997|      75.50517|
-| Europe    |  2002|      76.70060|
-| Europe    |  2007|      77.64860|
-| Oceania   |  1952|      69.25500|
-| Oceania   |  1957|      70.29500|
-| Oceania   |  1962|      71.08500|
-| Oceania   |  1967|      71.31000|
-| Oceania   |  1972|      71.91000|
-| Oceania   |  1977|      72.85500|
-| Oceania   |  1982|      74.29000|
-| Oceania   |  1987|      75.32000|
-| Oceania   |  1992|      76.94500|
-| Oceania   |  1997|      78.19000|
-| Oceania   |  2002|      79.74000|
-| Oceania   |  2007|      80.71950|
+| Africa    |  1952|         39.14|
+| Africa    |  1957|         41.27|
+| Africa    |  1962|         43.32|
+| Africa    |  1967|         45.33|
+| Africa    |  1972|         47.45|
+| Africa    |  1977|         49.58|
+| Africa    |  1982|         51.59|
+| Africa    |  1987|         53.34|
+| Africa    |  1992|         53.63|
+| Africa    |  1997|         53.60|
+| Africa    |  2002|         53.33|
+| Africa    |  2007|         54.81|
+| Americas  |  1952|         53.28|
+| Americas  |  1957|         55.96|
+| Americas  |  1962|         58.40|
+| Americas  |  1967|         60.41|
+| Americas  |  1972|         62.39|
+| Americas  |  1977|         64.39|
+| Americas  |  1982|         66.23|
+| Americas  |  1987|         68.09|
+| Americas  |  1992|         69.57|
+| Americas  |  1997|         71.15|
+| Americas  |  2002|         72.42|
+| Americas  |  2007|         73.61|
+| Asia      |  1952|         46.31|
+| Asia      |  1957|         49.32|
+| Asia      |  1962|         51.56|
+| Asia      |  1967|         54.66|
+| Asia      |  1972|         57.32|
+| Asia      |  1977|         59.61|
+| Asia      |  1982|         62.62|
+| Asia      |  1987|         64.85|
+| Asia      |  1992|         66.54|
+| Asia      |  1997|         68.02|
+| Asia      |  2002|         69.23|
+| Asia      |  2007|         70.73|
+| Europe    |  1952|         64.41|
+| Europe    |  1957|         66.70|
+| Europe    |  1962|         68.54|
+| Europe    |  1967|         69.74|
+| Europe    |  1972|         70.78|
+| Europe    |  1977|         71.94|
+| Europe    |  1982|         72.81|
+| Europe    |  1987|         73.64|
+| Europe    |  1992|         74.44|
+| Europe    |  1997|         75.51|
+| Europe    |  2002|         76.70|
+| Europe    |  2007|         77.65|
+| Oceania   |  1952|         69.25|
+| Oceania   |  1957|         70.30|
+| Oceania   |  1962|         71.09|
+| Oceania   |  1967|         71.31|
+| Oceania   |  1972|         71.91|
+| Oceania   |  1977|         72.85|
+| Oceania   |  1982|         74.29|
+| Oceania   |  1987|         75.32|
+| Oceania   |  1992|         76.94|
+| Oceania   |  1997|         78.19|
+| Oceania   |  2002|         79.74|
+| Oceania   |  2007|         80.72|
 
 We can visualize the mean life expectancy over time separated by continent by using a multiple line chart.
 
@@ -430,39 +430,36 @@ mean.lifeExp.bycontinentyear %>%
 
 ![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-15-1.png)
 
-``` r
-mean.lifeExp.bycontinentyear
-```
-
-    ## # A tibble: 60 x 3
-    ## # Groups:   continent [5]
-    ##    continent  year mean.lifeExp
-    ##    <fct>     <int>        <dbl>
-    ##  1 Africa     1952         39.1
-    ##  2 Africa     1957         41.3
-    ##  3 Africa     1962         43.3
-    ##  4 Africa     1967         45.3
-    ##  5 Africa     1972         47.5
-    ##  6 Africa     1977         49.6
-    ##  7 Africa     1982         51.6
-    ##  8 Africa     1987         53.3
-    ##  9 Africa     1992         53.6
-    ## 10 Africa     1997         53.6
-    ## # ... with 50 more rows
-
 It is great that the mean life expectancy for the continents have an increasing trend (for the most part). Africa, however, has a bit of a downward trend in life expectancy from 1990 to 2000 where it begins to increase again. That may be, in part, due to the HIV/AIDS epidemic. Oceania has the highest mean life expectacy of all the continents and is closely followed by Europe. Oceania's mean life expectancy started just below 70 years old in the 1950s, which is a very high rate to begin with! The mean life expectancy for Oceania rose to just over 80 by 2007.
 
-From the multiple line graph, we see that Africa consistently has the lowest mean life expectancy and Oceania consistently has the highest mean life expectancy over the years. So, it may be interesting to see a side-by-side comparison of the mean life expectancy values for those two continents over the years. Hence I will select the tables of just those two continents and display them side-by-side using the gridExtra package and tableGrob.
+From the multiple line graph, we see that Africa consistently has the lowest mean life expectancy and Oceania consistently has the highest mean life expectancy over the years. So, it may be interesting to see a side-by-side comparison of the mean life expectancy values for those two continents over the years. Hence, I will make a line chart of the mean life expectancy of just those two continents.
 
 ``` r
-mean.lifeExp.Africa <- tableGrob(mean.lifeExp.bycontinentyear[1:12,]) # table of Africa rows
-mean.lifeExp.Oceania<- tableGrob(mean.lifeExp.bycontinentyear[49:60,]) # table of Oceania rows
+# Construct a line chart for just Africa and Oceania
+Africa.Oceania.mean.lifeExp <- mean.lifeExp.bycontinentyear %>% 
+  filter(continent == "Africa" | continent == "Oceania")  # filter through continent mean life expectancy data to keep only Africa or Oceania rows 
 
-haligned <- gtable_combine(mean.lifeExp.Africa, mean.lifeExp.Oceania, along = 1) # combine along row
+Africa.Oceania.mean.lifeExp.chart <- Africa.Oceania.mean.lifeExp %>% 
+  ggplot(aes(x = year, y = mean.lifeExp, colour = continent)) +
+  geom_line(size = 1) + # add lines to track the life expectancy for the continents over time
+  geom_point(size = 2) # add points to the lines for the years. 
 
-grid.arrange(haligned, nrow = 1) # display tables side-by-side
+Africa.Oceania.mean.lifeExp.chart +  ggtitle("Mean life expectancy over time graph ") # add title
 ```
 
 ![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
-From seeing these side-by-side tables, it is easy to see exactly how different numerically the mean life expectancy differs over the years for the two continents. It is crazy to think that in 2007 (according to this data) the mean life expectancy differed for Africa and Oceania by 80.71 - 54.81 = 25.90 years!
+Now, I will make a table of the mean life expectancy of just those two continents using tableGrob and use grid.arrange() to place that table side-by-side with the above line chart.
+
+``` r
+Africa.Oceania.mean.lifeExp.untidy <- Africa.Oceania.mean.lifeExp %>% 
+  spread("continent", value = "mean.lifeExp") # use tidyr spread function to make Africa and Oceania mean life expectancy columns
+
+Africa.Oceania.mean.lifeExp.Grob <- tableGrob(Africa.Oceania.mean.lifeExp.untidy, theme=ttheme_default()) # tableGrob of Africa and Oceania mean life expectancy data
+
+grid.arrange(top="Mean Life expectancy over time (1952 - 2007) for Oceania and Africa", Africa.Oceania.mean.lifeExp.Grob, Africa.Oceania.mean.lifeExp.chart, nrow = 1) # display tables and bar chart side-by-side using grid.arrange()
+```
+
+![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-17-1.png)
+
+From inspecting these side-by-side tables, it is easy to see exactly how different the mean life expectancy differs over the years for the two continents. It is crazy to think that in 2007 (according to this data) the mean life expectancy differed for Africa and Oceania by 80.71 - 54.81 = 25.90 years!
