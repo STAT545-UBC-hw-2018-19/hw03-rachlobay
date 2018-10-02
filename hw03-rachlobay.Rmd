@@ -269,13 +269,11 @@ However, I am going to make the task have a more specific objective. I will spec
 ```{r results = 'asis'}
 mean.lifeExp.bycontinentyear <- gapminder %>% 
   group_by(continent, year) %>% # group by continent and year
-  summarize(mean.lifeExp = mean(lifeExp)) 
+  summarize(mean.lifeExp = round(mean(lifeExp), digits = 2)) # note that I rounded the mean life expectancy to 2 decimal places
 
 
 mean.lifeExp.bycontinentyear %>%  # summarize the mean life expectancy from 1952 - 2007 over 5 year periods for each continent
   kable() # table of the mean life expectancy grouped by continent and year (over 5 year periods from 1952 - 2007)
-
-
 ```
 
 We can visualize the mean life expectancy over time separated by continent by using a multiple line chart.
@@ -287,20 +285,34 @@ mean.lifeExp.bycontinentyear %>%
   geom_point(size = 2) + # add points to the lines for the years. 
   ggtitle("Mean life expectancy over time separated by continent")
 
-mean.lifeExp.bycontinentyear
 ```
 
 It is great that the mean life expectancy for the continents have an increasing trend (for the most part). Africa, however, has a bit of a downward trend in life expectancy from 1990 to 2000 where it begins to increase again. That may be, in part, due to the HIV/AIDS epidemic. Oceania has the highest mean life expectacy of all the continents and is closely followed by Europe. Oceania's mean life expectancy started just below 70 years old in the 1950s, which is a very high rate to begin with! The mean life expectancy for Oceania rose to just over 80 by 2007.
 
-From the multiple line graph, we see that Africa consistently has the lowest mean life expectancy and Oceania consistently has the highest mean life expectancy over the years. So, it may be interesting to see a side-by-side comparison of the mean life expectancy values for those two continents over the years. Hence I will select the tables of just those two continents and display them side-by-side using the gridExtra package and tableGrob. 
+From the multiple line graph, we see that Africa consistently has the lowest mean life expectancy and Oceania consistently has the highest mean life expectancy over the years. So, it may be interesting to see a side-by-side comparison of the mean life expectancy values for those two continents over the years. Hence, I will make a line chart of the mean life expectancy of just those two continents. 
 
 ```{r}
-mean.lifeExp.Africa <- tableGrob(mean.lifeExp.bycontinentyear[1:12,]) # table of Africa rows
-mean.lifeExp.Oceania<- tableGrob(mean.lifeExp.bycontinentyear[49:60,]) # table of Oceania rows
+# Construct a line chart for just Africa and Oceania
+Africa.Oceania.mean.lifeExp <- mean.lifeExp.bycontinentyear %>% 
+  filter(continent == "Africa" | continent == "Oceania")  # filter through continent mean life expectancy data to keep only Africa or Oceania rows 
 
-haligned <- gtable_combine(mean.lifeExp.Africa, mean.lifeExp.Oceania, along = 1) # combine along row
+Africa.Oceania.mean.lifeExp.chart <- Africa.Oceania.mean.lifeExp %>% 
+  ggplot(aes(x = year, y = mean.lifeExp, colour = continent)) +
+  geom_line(size = 1) + # add lines to track the life expectancy for the continents over time
+  geom_point(size = 2) # add points to the lines for the years. 
 
-grid.arrange(haligned, nrow = 1) # display tables side-by-side
+Africa.Oceania.mean.lifeExp.chart +  ggtitle("Mean life expectancy over time graph ") # add title
 ```
 
-From seeing these tables side-by-side, it is easy to see exactly how different numerically the mean life expectancy differs over the years for the continents. It is crazy to think that in 2007 (according to this data) the mean life expectancy differed for Africa and Oceania by 80.71 - 54.81 = 25.90 years! 
+Now, I will make a table of the mean life expectancy of just those two continents using tableGrob and use grid.arrange() to place that table side-by-side with the above line chart. 
+
+```{r}
+Africa.Oceania.mean.lifeExp.untidy <- Africa.Oceania.mean.lifeExp %>% 
+  spread("continent", value = "mean.lifeExp") # use tidyr spread function to make Africa and Oceania mean life expectancy columns
+
+Africa.Oceania.mean.lifeExp.Grob <- tableGrob(Africa.Oceania.mean.lifeExp.untidy, theme=ttheme_default()) # tableGrob of Africa and Oceania mean life expectancy data
+
+grid.arrange(top="Mean Life expectancy over time (1952 - 2007) for Oceania and Africa", Africa.Oceania.mean.lifeExp.Grob, Africa.Oceania.mean.lifeExp.chart, nrow = 1) # display tables and bar chart side-by-side using grid.arrange()
+```
+
+From inspecting these side-by-side tables, it is easy to see exactly how different the mean life expectancy differs over the years for the two continents. It is crazy to think that in 2007 (according to this data) the mean life expectancy differed for Africa and Oceania by 80.71 - 54.81 = 25.90 years! 

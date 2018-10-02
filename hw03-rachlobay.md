@@ -465,4 +465,4 @@ grid.arrange(haligned, nrow = 1) # display tables side-by-side
 
 ![](hw03-rachlobay_files/figure-markdown_github/unnamed-chunk-16-1.png)
 
-From seeing these tables side-by-side, it is easy to see exactly how different numerically the mean life expectancy differs over the years for the continents. It is crazy to think that in 2007 (according to this data) the mean life expectancy differed for Africa and Oceania by 80.71 - 54.81 = 25.90 years!
+From seeing these side-by-side tables, it is easy to see exactly how different numerically the mean life expectancy differs over the years for the two continents. It is crazy to think that in 2007 (according to this data) the mean life expectancy differed for Africa and Oceania by 80.71 - 54.81 = 25.90 years!
