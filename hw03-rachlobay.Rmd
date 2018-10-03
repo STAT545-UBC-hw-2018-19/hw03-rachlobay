@@ -20,14 +20,13 @@ always_allow_html: yes
 
 # Load gapminder data and peak at the data
 
-First, I will load the gapminder data. Also, I will load the ggplot2 package and I will load the dplyr package by loading the tidyverse package.
+First, I will load the gapminder data. Also, I will load the ggplot2 package and the dplyr package by loading the tidyverse package.
 
 ```{r message=FALSE}
 # Note that I suppressed the messages that appear when I used library() by typing ```{r message=FALSE} at the top of this code block. I found the easiest way to suppress the messages from multiple packages, insted of typing suppressPackageStartupMessages() around library() each time.
 
 library(gapminder) # laod gapminder data
 
-library(ggplot2) # laod ggplot2 package
 library(tidyverse) # load tidyverse package
 library(knitr) # for kable() function to make tables spiffy
 ```
